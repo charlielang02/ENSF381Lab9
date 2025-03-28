@@ -1,0 +1,7 @@
+{
+  "scripts": {
+  "start": "concurrently \"npm run frontend\" \"npm run backend\"",
+  "frontend": "cd frontend && cd lab9 && npm start",
+  "backend": "cd backend && flask run"
+}
+}

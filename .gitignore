@@ -1,1 +1,3 @@
 *.pkl
+node_modules
+*.pyc

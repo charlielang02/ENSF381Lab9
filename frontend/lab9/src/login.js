@@ -1,8 +1,5 @@
-import React, {useState} from "react"
+import React, {useState, useEffect} from "react"
 import "./login.css"
-
-from flask_cors import CORS
-from flask import Flask, request, jsonify
 
 function Login() {
     const [username, setUsername] = useState("")
@@ -15,10 +12,10 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault()
         try {
-            const response = await fetch('https://127.0.0.1:5000/validate_login', {
+            const response = await fetch('http://127.0.0.1:5000/validate_login', {
                 method: 'POST',
-                headers: { 'Content_Type': 'application/json'},
-                body: JSON.stringify({username, password}),
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({username: username, password: password}),
             });
             const data = await response.json();
             setLoginSuccessful(data.success)
@@ -30,11 +27,13 @@ function Login() {
         catch (error) {
             console.error('Error fetching prediction:', error);
         }
+    };
 
-        if (loginSuccessful === true) {
+    useEffect(() => {
+        if (loginSuccessful) {
             window.location.href = "/predict";
         }
-    };
+    }, [loginSuccessful]);
 
     return (
         <div className = "form-container">
@@ -68,8 +67,8 @@ function Login() {
                 </form>
             </div>
             {!loginSuccessful && message && (
-                <div class='error-message'>
-                    Error: ${message}
+                <div className='error-message'>
+                    Error: {message}
                 </div>
             )}
         </div>
